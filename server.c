@@ -1,5 +1,13 @@
 #include "minitalk.h"
 
+/* 	TODO[Leighton]:
+ *  	-	Take in the value assigned when a SIGUSR signal
+ *  		is received.
+ *  	-	Store it in a bit array.
+ *  	-	Convert bit array to decimal
+ *  	-	Display char decimal to screen
+*/ 	
+
 void	receive_bits(int sig)
 {
 	if (sig == SIGUSR1)
