@@ -25,7 +25,7 @@ static int	send_bits(int s_pid, char *bit_arr, size_t size)
 		printf("----------\n");
 		while (size-- > 0)
 		{
-			bit = bit_arr[size - 1] - '0';
+			bit = bit_arr[size] - '0';
 			if (bit == 1)
 				err = kill(s_pid, SIGUSR1);
 			else
@@ -47,6 +47,7 @@ static int send_byte(int s_pid, int c, size_t size)
 	unsigned int	bit;
 	unsigned int	shift;
 
+	//	**Set Binary Array**
 	ret = 0;
 	bit_arr = (char *)malloc(((size * 8) + 1) * sizeof(char));
 	if (!bit_arr)
@@ -55,14 +56,16 @@ static int send_byte(int s_pid, int c, size_t size)
 		return (ret);
 	}
 
-	//	**Set Binary Array**
+	//	Shifts Bits down and stores LSB into an array.
 	shift = 0;
 	while (shift < (size * 8))
 	{
 		printf("----------\nSetting Bit Array\n");
-		printf("shift = %d  -  size = %ld\n", shift, (size * 8));
+		printf("shift = %d  <  size = %ld\n", shift, (size * 8));
 		
-		//	Shifts Bits down and stores LSB into an array.
+		// Assigns bit value of 1 if 1 bit is found by shift multiplier.
+		// Otherwise assigned value of 0.
+		// 2 to power of (n - 1).
 		bit = (c >> shift) & 1;
 		bit_arr[shift] = bit + '0';
 		printf("Bit = [%c]\n", bit_arr[shift]);
