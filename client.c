@@ -20,7 +20,7 @@ static int	send_bits(int s_pid, char *bit_arr, size_t size)
 
 	ret = 0;
 	bit = 0;
-	if (bit_arr && size)
+	if (bit_arr && s_pid)
 	{
 		printf("----------\n");
 		while (size-- > 0)
@@ -54,21 +54,29 @@ static int send_byte(int s_pid, int c, size_t size)
 		printf("ERROR!!! Malloc Failed...\n");
 		return (ret);
 	}
+
+	//	**Set Binary Array**
 	shift = 0;
 	while (shift < (size * 8))
 	{
 		printf("----------\nSetting Bit Array\n");
 		printf("shift = %d  -  size = %ld\n", shift, (size * 8));
+		
+		//	Shifts Bits down and stores LSB into an array.
 		bit = (c >> shift) & 1;
 		bit_arr[shift] = bit + '0';
 		printf("Bit = [%c]\n", bit_arr[shift]);
 		shift++;
 	}
 	bit_arr[shift] = '\0';
+
+	//	Dump Binary Array.
 	printf("----------\n");
 	for (unsigned int j = 0; j < (size * 8); j++)
 		write(1, &bit_arr[j], 1);
 	write(1, "\n", 1);
+
+	//	Send Bits to Server, return successful bits sent.
 	ret += send_bits(s_pid, bit_arr, ft_strlen(bit_arr));
 	free(bit_arr);
 	return (ret);
