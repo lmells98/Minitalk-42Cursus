@@ -1,14 +1,30 @@
+CFLAGS	= -Wall -Werror -Wextra
+CC		= gcc
+
+SRVR	= $(SRC_DIR)/server.c
+CLNT	= $(SRC_DIR)/client.c
+
+SRC_DIR	= ./srcs
+PRNTF	= $(SRC_DIR)/ft_printf/libftprintf.a
+
 all: server client
 
-server:
-	gcc -Wall -Werror -Wextra -I . $@.c -o $@.out
+server: $(PRNTF)
+	$(CC) $(CFLAGS) -I . $(SRVR) $(PRNTF) -o server
 
-client:
-	gcc -Wall -Werror -Wextra -I . $@.c -o $@.out
+client: $(PRNTF)
+	$(CC) $(CFLAGS) -I . $(CLNT) $(PRNTF) -o client
+
+$(PRNTF):
+	make -C $(SRC_DIR)/ft_printf libftprintf.a
 
 clean:
-	rm -rf *.out
+	make -C $(SRC_DIR)/ft_printf/ clean
+	rm -rf client
 
 fclean: clean
+	make -C $(SRC_DIR)/ft_printf/ fclean
+	rm -rf server
+
 
 re: clean fclean all
