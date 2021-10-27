@@ -14,6 +14,7 @@ static char	build_bits(int byte)
 
 	/*	[TODO]:
 	 *		-	Figure out Bit shifting upwards.
+         *              -       start from 0, work up and don't check for 1
 	*/ 	
 	shift = 8;
 	if (shift > 0)
