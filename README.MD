@@ -15,7 +15,7 @@ If we choose to use a global variable, we must justify our choice when defending
 
 - Clone this repository.
 - Open 2 terminal windows & change directory ```cd``` of both windows to the cloned repository.
-- Run ```make all``` to build both the server and client executables.
+- Run ```make all``` to build both the server ```./server``` and client ```./client``` executables.
 - Run the server ```./server``` in 1 of the windows. The ```process id``` of the server ```<pid>``` will then be prompted.
 - In the other window, run the client ```./client```.
 - Use:  ```./client <pid> "Your Message Here!"```
