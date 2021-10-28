@@ -1,5 +1,5 @@
 # Support
-Only supports printable ASCII Characters!
+Only supports ASCII Characters!
 Currently working on Unicode Support...
 
 Tested with valgrind.
