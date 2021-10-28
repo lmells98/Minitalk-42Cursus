@@ -1,4 +1,4 @@
-CFLAGS	= -Wall -Werror -Wextra
+CFLAGS	= -Wall -Werror -Wextra -g
 CC		= gcc
 
 SRVR	= $(SRC_DIR)/server.c
