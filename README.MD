@@ -1,11 +1,3 @@
-# Support
-Only supports ASCII Characters!
-Currently working on Unicode Support...
-
-Tested with valgrind.
-- No memory leaks detected.
-- All heap blocks freed -- no leaks possible.
-
 # Minitalk-42Cursus
 
 The purpose of this project is to code a small data exchange program using UNIX signals.
@@ -28,6 +20,13 @@ If we choose to use a global variable, we must justify our choice when defending
 - In the other window, run the client ```./client```.
 - Use:  ```./client <pid> "Your Message Here!"```
 
+# Support
+Only supports ASCII Characters!
+Currently working on Unicode Support...
+
+Tested with valgrind.
+- No memory leaks detected.
+- All heap blocks freed -- no leaks possible.
 
 Thankyou for taking the time to visit.
 
