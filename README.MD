@@ -17,7 +17,7 @@ We are prohibited to using only one gloabal variable.
 # How to Use...
 
 - Clone this repository.
-- Open 2 terminal windows & change directory ```cd``` of both windows the cloned repository.
+- Open 2 terminal windows & change directory ```cd``` of both windows to the cloned repository.
 - Run the server ```./server``` in 1 of the windows. The ```process id``` of the server ```<pid>``` will then be prompted.
 - In the other window, run the client ```./client```.
 - Use:  ```./client <pid> "Your Message Here!"```
