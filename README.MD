@@ -1,3 +1,7 @@
+# Support
+Only supports printable ASCII Characters!
+Currently working on Unicode Support...
+
 # Minitalk-42Cursus
 
 The purpose of this project is to code a small data exchange program using UNIX signals.
@@ -9,3 +13,14 @@ We are prohibited to using only one gloabal variable.
 - Speed is crucial. If we think it's taking too long, then it probably is too slow.
 - The server should be able to recieve several strings in a row from the client, without being restarted.
 - Only able to use two signals ```SIGUSR1``` and ```SIGUSR2```.
+
+# How to Use...
+
+- Clone this repository.
+- Open 2 terminal windows & change directory ```cd``` of both windows the cloned repository.
+- Run the server ```./server``` in 1 of the windows. The ```process id``` of the server ```<pid>``` will then be prompted.
+- In the other window, run the client ```./client```.
+- Use:  ```./client <pid> "Your Message Here!"```
+
+Thankyou for taking the time to visit.
+Leighton.
