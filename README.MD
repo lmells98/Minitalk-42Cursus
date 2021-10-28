@@ -2,6 +2,10 @@
 Only supports printable ASCII Characters!
 Currently working on Unicode Support...
 
+Tested with valgrind.
+- No memory leaks detected.
+- All heap blocks freed -- no leaks possible.
+
 # Minitalk-42Cursus
 
 The purpose of this project is to code a small data exchange program using UNIX signals.
@@ -18,6 +22,7 @@ We are prohibited to using only one gloabal variable.
 
 - Clone this repository.
 - Open 2 terminal windows & change directory ```cd``` of both windows to the cloned repository.
+- Run ```make all``` to bould both the server and client executables.
 - Run the server ```./server``` in 1 of the windows. The ```process id``` of the server ```<pid>``` will then be prompted.
 - In the other window, run the client ```./client```.
 - Use:  ```./client <pid> "Your Message Here!"```
