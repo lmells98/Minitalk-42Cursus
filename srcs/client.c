@@ -10,7 +10,6 @@ static int	send_bits(int s_pid, char *bit_arr, size_t size)
 	bit = 0;
 	if (bit_arr && s_pid)
 	{
-		ft_printf("----------\n");
 		while (size-- > 0)
 		{
 			bit = bit_arr[size] - '0';
@@ -18,13 +17,14 @@ static int	send_bits(int s_pid, char *bit_arr, size_t size)
 				err = kill(s_pid, SIGUSR1);
 			else
 				err = kill(s_pid, SIGUSR2);
-			if (err == 0)
-				ft_printf("Bit Sent...\n");
+			if (err == -1)
+				ft_printf("Failed to Send...\n");
 			ret += 1;
-			usleep(500);
+			usleep(200);
 		}
 		return (ret);
 	}
+	ft_printf("Error! Something went wrong...\n");
 	return (ret);
 }
 
@@ -48,15 +48,12 @@ static int send_byte(int s_pid, int c, size_t size)
 	shift = 0;
 	while (shift < (size * 8))
 	{
-		ft_printf("----------\nSetting Bit Array\n");
-		ft_printf("shift = %d  <  size = %d\n", shift, ((int)size * 8));
-		
-		// Assigns bit value of 1 if 1 bit is found by shift multiplier.
-		// Otherwise assigned value of 0.
-		// 2 to power of (n - 1).
+		/* Assigns bit value of 1 if 1 bit is found by shift multiplier.
+		 * Otherwise assigned value of 0.
+		 * 2 to power of (n - 1).
+		*/ 
 		bit = (c >> shift) & 1;
 		bit_arr[shift] = bit + '0';
-		ft_printf("Bit = [%c]\n", bit_arr[shift]);
 		shift++;
 	}
 	bit_arr[shift] = '\0';
@@ -91,11 +88,7 @@ static int	get_character_UNI(int s_pid, char *str, size_t size)
 		c = str[i];
 		c_len = sizeof(c);
 		if (c_len)
-		{
-			ft_printf("Got Char - \'%c\'\n", c);
-			ft_printf("Bytes = %i\n", c_len);
 			bits += send_byte(s_pid, c, c_len);
-		}
 		else
 		{
 			ft_printf("ERROR!!! Couldnt get size of char from string...\n");
@@ -130,7 +123,5 @@ int	main(int argc, char **argv)
 		bytes += get_character_UNI(s_pid, argv[2], ft_strlen(argv[2]));
 		ft_printf("Bytes Sent [%i] to PID - %d\n", bytes, s_pid);
 	}
-	else
-		ft_printf("Something Went Wrong...");
 	return (0);
 }
