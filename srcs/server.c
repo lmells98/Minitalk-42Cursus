@@ -7,45 +7,72 @@
  *  	-	Convert bit array to decimal
  *  	-	Display char decimal to screen
 */
-static char	build_bits(int byte)
+static char	*build_bits(char *byte, int c)
 {
-	static char 	bits;
-	unsigned int	shift;
+	char			*bit_arr;
+	unsigned int	i;
+	unsigned int	size;
 
-	/*	[TODO]:
-	 *		-	Figure out Bit shifting upwards.
-         *              -       start from 0, work up and don't check for 1
-	*/ 	
-	shift = 8;
-	if (shift > 0)
+	if (!byte)
+		byte = ft_strdup("");
+	size = ft_strlen(byte);
+	bit_arr = (char *)malloc((size + 2) * sizeof(char));
+	if (!bit_arr)
+		return (NULL);
+	i = 0;
+	while (i < size)
 	{
-		bits = (byte << shift) & 1;
-		ft_printf("S=%u - By=%i - Bi=%i\n", shift, byte, bits);
-		shift--;
+		bit_arr[i] = byte[i];
+		i++;
 	}
-	return (bits);
+	free(byte);
+	bit_arr[i] = (char)c;
+	bit_arr[i + 1] = '\0';
+	return (bit_arr);
+}
+
+static void convert_bits(char *bit_arr, size_t size)
+{
+	unsigned int	byte;
+	unsigned int	i;
+	size_t			power;
+
+	if (!bit_arr || size != 8)
+	{
+		ft_printf("Something went wrong!\n");
+		return ;
+	}
+	byte = 0;
+	i = 0;
+	power = 1;
+	while (size-- > 1)
+		power *= 2;
+	while (power != 0)
+	{
+		byte += (bit_arr[i] - '0') * power;
+		power /= 2;
+		i++;
+	}
+	ft_printf("%c", byte);
 }
 
 static void	receive_bits(int sig)
 {
 	static int		count;
-	static char		byte;
+	static char		*byte;
 
-	if (!count)
+	if (byte == NULL)
 		count = 0;
 	count += 1;
-	ft_printf("C=%d", count);
-	write(1, "\n", 1);
 	if (sig == SIGUSR1)
-		byte = build_bits('1');
+		byte = build_bits(byte, '1');
 	else if (sig == SIGUSR2)
-		byte = build_bits('0');
+		byte = build_bits(byte, '0');
 	if (count == 8)
 	{
-		ft_printf("End of Byte\n");
-		write(1, &byte, ft_strlen(&byte));
-		byte = 0;
-		count = 0;
+		convert_bits(byte, ft_strlen(byte));
+		free(byte);
+		byte = NULL;
 	}
 }
 
