@@ -22,5 +22,5 @@ We are prohibited to using only one gloabal variable.
 - In the other window, run the client ```./client```.
 - Use:  ```./client <pid> "Your Message Here!"```
 
-Thankyou for taking the time to visit.
+Thankyou for taking the time to visit.\n
 Leighton.
