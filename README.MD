@@ -10,6 +10,7 @@ Tested with valgrind.
 
 The purpose of this project is to code a small data exchange program using UNIX signals.
 We are prohibited to using only one gloabal variable.
+If we choose to use a global variable, we must justify our choice when defending our code during evaluations
 
 - We must create a communication program on the form of a server and a client.
 - The server must be launched first, after launch it must display its PID.
