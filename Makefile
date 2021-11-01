@@ -33,6 +33,7 @@ clean:
 
 fclean: clean
 	make -C $(SRC)/ft_printf/ fclean
+	rm -rf *.dSYM
 	rm -rf server
 
 re: clean fclean b
