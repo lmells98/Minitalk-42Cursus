@@ -10,7 +10,9 @@ PRNTF	= $(SRC)/ft_printf/libftprintf.a
 BONUS	= $(SRC)/bonus
 B		= $(BONUS)
 
-all: server client
+all: m
+
+m: server client
 
 b: $(PRNTF)
 	$(CC) $(CFLAGS) -I $(B) $(BONUS)/server_bonus.c $(PRNTF) -o server
