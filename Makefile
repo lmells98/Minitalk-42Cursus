@@ -1,13 +1,20 @@
 CFLAGS	= -Wall -Werror -Wextra -g
 CC		= gcc
 
-SRVR	= $(SRC_DIR)/server.c
-CLNT	= $(SRC_DIR)/client.c
+SRVR	= $(SRC)/server.c
+CLNT	= $(SRC)/client.c
 
-SRC_DIR	= ./srcs
-PRNTF	= $(SRC_DIR)/ft_printf/libftprintf.a
+SRC		= ./srcs
+PRNTF	= $(SRC)/ft_printf/libftprintf.a
+
+BONUS	= $(SRC)/bonus
+B		= $(BONUS)
 
 all: server client
+
+b: $(PRNTF)
+	$(CC) $(CFLAGS) -I $(B) $(BONUS)/server_bonus.c $(PRNTF) -o server
+	$(CC) $(CFLAGS) -I $(B) $(BONUS)/client_bonus.c $(PRNTF) -o client
 
 server: $(PRNTF)
 	$(CC) $(CFLAGS) -I . $(SRVR) $(PRNTF) -o server
@@ -16,15 +23,14 @@ client: $(PRNTF)
 	$(CC) $(CFLAGS) -I . $(CLNT) $(PRNTF) -o client
 
 $(PRNTF):
-	make -C $(SRC_DIR)/ft_printf libftprintf.a
+	make -C $(SRC)/ft_printf libftprintf.a
 
 clean:
-	make -C $(SRC_DIR)/ft_printf/ clean
+	make -C $(SRC)/ft_printf/ clean
 	rm -rf client
 
 fclean: clean
-	make -C $(SRC_DIR)/ft_printf/ fclean
+	make -C $(SRC)/ft_printf/ fclean
 	rm -rf server
 
-
-re: clean fclean all
+re: clean fclean b
