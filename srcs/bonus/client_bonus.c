@@ -1,9 +1,6 @@
 #include "minitalk_bonus.h"
 
-/*	[TODO]:
- *		-	Declare global variable to verify length of message.
-*/
-
+t_Character	g_Character;
 /*		TEST SENDING CHAR 'A'
 static void	send_test(int server_pid)
 {
@@ -52,6 +49,7 @@ static void	send_char_bits(char byte, int pid)
 	while (shift < 8)
 	{
 		bit = (byte >> shift) & 1;
+		ft_printf("%i", bit);
 		if (bit == 1)
 			err = kill(pid, SIGUSR1);
 		else
@@ -61,6 +59,7 @@ static void	send_char_bits(char byte, int pid)
 		usleep(200);
 		shift++;
 	}
+	ft_printf("\n");
 }
 
 static void	get_message_binary(char *message, int pid)
@@ -70,7 +69,7 @@ static void	get_message_binary(char *message, int pid)
 	i = 0;
 	while (message[i] != '\0')
 	{
-		ft_printf("Got Char - \'%c\'\n", message[i]);
+		ft_printf("----------\nGot Char - \'%c\'\n", message[i]);
 		send_char_bits(message[i], pid);
 		i++;
 	}
@@ -78,7 +77,7 @@ static void	get_message_binary(char *message, int pid)
 
 int	main(int argc, char **argv)
 {
-	int				server_pid;
+	unsigned int	server_pid;
 
 	if (argc != 3)
 	{
@@ -88,8 +87,9 @@ int	main(int argc, char **argv)
 	}
 	server_pid = ft_atoi(argv[1]);
 	g_Character.size = ft_strlen(argv[2]);
-	ft_printf("----------\nString Info\n----------\n");
-	ft_printf("String\t= \"%s\"\nlen\t= %d\n----------\n", argv[2], g_Character.size);
+	ft_printf("----------\nDEBUG INFO\n----------\n");
+	ft_printf("Client\t= %d\n", getpid());
+	ft_printf("String\t= \"%s\"\nlen\t= %d\n", argv[2], ft_strlen(argv[2]));
 //	send_test(server_pid);
 	get_message_binary(argv[2], server_pid);
 	return (0);
