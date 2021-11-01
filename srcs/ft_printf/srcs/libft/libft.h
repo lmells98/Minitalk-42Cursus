@@ -30,6 +30,7 @@ int		ft_lstsize(t_list *lst);
 char	*ft_itoa(int n);
 char	*ft_strdup(const char *s1);
 char	*ft_strchr(const char *s, int c);
+char	*ft_append_char(char *old_arr, char byte);
 char	*ft_strjoin(const char *s1, const char *s2);
 char	*ft_strtrim(const char *s1, const char *set);
 char	*ft_substr(const char *s, unsigned int size, size_t len);
