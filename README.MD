@@ -28,7 +28,7 @@ Bonus     - Supports ASCII Characters & sends a signal back to client upon recei
 # Support
 
 - Mandatory - Supports ASCII Characters.
-- Bonus - Supports ASCII Characters
+- Bonus - Supports Unicode Characters
 
 Tested with valgrind.
 - No memory leaks detected.
