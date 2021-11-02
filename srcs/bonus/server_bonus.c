@@ -1,28 +1,50 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server_bonus.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lmells <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/02 08:45:59 by lmells            #+#    #+#             */
+/*   Updated: 2021/11/02 11:12:38 by lmells           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minitalk_bonus.h"
 
 t_Character	g_Character;
 
-static void	build_message(int bit, t_Character *g_char)
+/*	[TODO];	** FUNTION**
+ *		-	Write a function that will Initialise all struct variables.
+ *		-	Server startup messages will print here.
+ */ 
+static void	init_struct(void)
 {
-	static char	*message;
+	g_Character.byte = 0;
+	g_Character.shift = 0;
+	g_Character.size = 0;
+	ft_printf("---------- Launching Minitalk Server ----------\n");
+	ft_printf("\t\tServer PID : %d\n", getpid());
+	ft_printf("Launch the client in seperate window to start talking\n");
+	ft_printf("-----------------------------------------------\n");
+}
 
-	if (!message)
-		message = ft_strdup("");
+static void	build_message(int bit, t_Character *g_char, pid_t client)
+{
 	g_char->byte += bit << g_char->shift;
 	g_char->shift++;
+	g_char->size += 1;
 	if (g_char->shift == 8)
 	{
-		message = ft_append_char(message, g_char->byte);
+		if (!g_char->byte)
+		{
+			ft_putstr_fd("\n", 1);
+			kill(client, SIGUSR2);
+		}
+		ft_putchar_fd(g_char->byte, 1);
+		g_char->size += 0;
 		g_char->byte = 0;
 		g_char->shift = 0;
-		g_char->size += 1;
-	}
-	if (g_char->size && g_char->size == ft_strlen(message))
-	{
-		ft_putstr_fd(message, 1);
-		free(message);
-		message = NULL;
-		g_char->size = 0;
 	}
 }
 
@@ -36,13 +58,12 @@ static void	build_message(int bit, t_Character *g_char)
 static void	receive_signal(int bit, siginfo_t *info, void *context)
 {
 	(void)context;
-	g_Character.client_pid = info->si_pid;
 	//g_Character.client_pid = 123;
 	if (bit == SIGUSR1)
 		bit = 1;
 	else if (bit == SIGUSR2)
 		bit = 0;
-	build_message(bit, &g_Character);
+	build_message(bit, &g_Character, info->si_pid);
 }
 
 /*	[TODO]:
@@ -61,15 +82,17 @@ int	main(void)
 {
 	struct sigaction	sa;
 	
+	ft_memset(&sa, '\0', sizeof(sa));
+	sigemptyset(&sa.sa_mask);
+
 	sa.sa_flags = SA_SIGINFO;
-	sa.sa_sigaction = receive_signal;
-	g_Character.byte = 0;
-	g_Character.shift = 0;
-	g_Character.size = 0;
-	g_Character.client_pid = 0;
-	ft_printf("Server PID: %u\n", getpid());
-	sigaction(SIGUSR1, &sa, NULL);
-	sigaction(SIGUSR2, &sa, NULL);
+	sa.sa_sigaction = &receive_signal;
+
+	init_struct();
 	while (1)
+	{
+		sigaction(SIGUSR1, &sa, NULL);
+		sigaction(SIGUSR2, &sa, NULL);
 		pause();
+	}
 }

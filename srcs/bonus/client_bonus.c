@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lmells <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/02 08:45:59 by lmells            #+#    #+#             */
+/*   Updated: 2021/11/02 12:08:55 by lmells           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minitalk_bonus.h"
 
 t_Character	g_Character;
@@ -38,6 +50,20 @@ static void	send_test(int server_pid)
 }
 */
 
+/*	[TODO]:
+ *		-	Write a function that will handle signal from server.
+ *		-	Confirms successful bytes sent.
+*/
+static void	confirm_server(int sig)
+{
+	(void)sig;
+	if (sig == SIGUSR2)
+	{
+		ft_printf("Message sent successfully!\n");
+		exit(EXIT_SUCCESS);
+	}
+}
+
 static void	send_char_bits(char byte, int pid)
 {
 	unsigned int	shift;
@@ -62,35 +88,36 @@ static void	send_char_bits(char byte, int pid)
 	ft_printf("\n");
 }
 
-static void	get_message_binary(char *message, int pid)
-{
-	unsigned int	i;
-	
-	i = 0;
-	while (message[i] != '\0')
-	{
-		ft_printf("----------\nGot Char - \'%c\'\n", message[i]);
-		send_char_bits(message[i], pid);
-		i++;
-	}
-}
-
 int	main(int argc, char **argv)
 {
-	unsigned int	server_pid;
+	unsigned int		server_pid;
+	unsigned int		i;
+	struct	sigaction	s_client;
 
-	if (argc != 3)
+	if (argc == 3)
+	{
+		s_client.sa_handler = &confirm_server;
+		server_pid = ft_atoi(argv[1]);
+		ft_printf("----------\nDEBUG INFO\n----------\n");
+		ft_printf("Client\t= %d\n", getpid());
+		ft_printf("String\t= \"%s\"\nlen\t= %d\n", argv[2], ft_strlen(argv[2]));
+//		send_test(server_pid);
+		i = 0;
+		while (1)
+		{
+			sigaction(SIGUSR2, &s_client, NULL);
+			while (1 < ft_strlen(argv[2]))
+			{
+				send_char_bits(argv[2][i], server_pid);
+				i++;
+			}
+			pause();
+		}
+	}
+	else
 	{
 		ft_printf("Error!!! Incorrect Usage\n");
 		ft_printf("Use: ./client <pid> message\n");
-		return (0);
 	}
-	server_pid = ft_atoi(argv[1]);
-	g_Character.size = ft_strlen(argv[2]);
-	ft_printf("----------\nDEBUG INFO\n----------\n");
-	ft_printf("Client\t= %d\n", getpid());
-	ft_printf("String\t= \"%s\"\nlen\t= %d\n", argv[2], ft_strlen(argv[2]));
-//	send_test(server_pid);
-	get_message_binary(argv[2], server_pid);
 	return (0);
 }
