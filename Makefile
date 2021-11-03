@@ -10,7 +10,7 @@ PRNTF	= $(SRC)/ft_printf/libftprintf.a
 BONUS	= $(SRC)/bonus
 B		= $(BONUS)
 
-all: m
+all: b
 
 m: server client
 
@@ -39,4 +39,4 @@ fclean: clean
 norm:
 	norminette $(BONUS) $(SRVR) $(CLNT) ./includes/.
 
-re: clean fclean b
+re: clean fclean norm all
