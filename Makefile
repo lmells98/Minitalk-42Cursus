@@ -36,4 +36,7 @@ fclean: clean
 	rm -rf *.dSYM
 	rm -rf server
 
+norm:
+	norminette $(BONUS) $(SRVR) $(CLNT) ./includes/.
+
 re: clean fclean b

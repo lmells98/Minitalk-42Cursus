@@ -6,7 +6,7 @@
 /*   By: lmells <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 08:45:13 by lmells            #+#    #+#             */
-/*   Updated: 2021/11/03 11:25:12 by lmells           ###   ########.fr       */
+/*   Updated: 2021/11/03 12:42:04 by lmells           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ static int	ft_send_bits(int s_pid, char *bit_arr, size_t size)
 	return (ret);
 }
 
-static int ft_send_byte(int s_pid, int c, size_t size)
+static int	ft_send_byte(int s_pid, int c, size_t size)
 {
 	int				ret;
-	char 			*bit_arr;
+	char			*bit_arr;
 	unsigned int	bit;
 	unsigned int	shift;
 
@@ -67,7 +67,7 @@ static int ft_send_byte(int s_pid, int c, size_t size)
 	return (ret);
 }
 
-static int	ft_get_character_ASCII(int s_pid, char *str, size_t size)
+static int	ft_get_character(int s_pid, char *str, size_t size)
 {
 	int				bits;
 	char			c;
@@ -113,9 +113,6 @@ int	main(int argc, char **argv)
 	bytes = 0;
 	s_pid = ft_atoi(argv[1]);
 	if (ft_arg_handle(argc))
-	{
-		bytes += ft_get_character_ASCII(s_pid, argv[2], ft_strlen(argv[2]));
-		ft_printf("Bytes Sent [%i] to PID - %d\n", bytes, s_pid);
-	}
+		bytes += ft_get_character(s_pid, argv[2], ft_strlen(argv[2]));
 	return (0);
 }

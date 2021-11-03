@@ -6,15 +6,11 @@
 /*   By: lmells <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 08:45:59 by lmells            #+#    #+#             */
-/*   Updated: 2021/11/03 11:21:02 by lmells           ###   ########.fr       */
+/*   Updated: 2021/11/03 13:00:09 by lmells           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk_bonus.h"
-
-/*			** GLOBAL STRUCT **
-*/
-t_Character	g_Character;
 
 /*	[TODO]:
  *		-	Write a function that will handle signal from server.
@@ -39,7 +35,7 @@ static void	confirm_server(int sig)
  *		-	Use kill() to send a signal to the process ID. Returns 0 on
  *			succesful send. -1 if it errors.
  *		-	Shift is incremented to apply (2 ^ shift).
-*/ 
+*/
 static void	send_char_bits(char byte, int pid)
 {
 	unsigned int	shift;
@@ -51,7 +47,6 @@ static void	send_char_bits(char byte, int pid)
 	while (shift < 8)
 	{
 		bit = (byte >> shift) & 1;
-		ft_printf("%i", bit);
 		if (bit == 1)
 			err = kill(pid, SIGUSR1);
 		else
@@ -61,6 +56,21 @@ static void	send_char_bits(char byte, int pid)
 		usleep(200);
 		shift++;
 	}
+}
+
+/*	[TODO];
+ *		-	NORMINETTE... FOREVER SCREWING US ALL!
+ *		-	Fix 25 lines norm error with argument checking function.
+*/
+static int	args_check(int argc)
+{
+	if (argc != 3)
+	{
+		ft_printf("Incorrect Number of Arguments!\n");
+		ft_printf("Use: ./client <PID> \"message\"\n");
+		return (0);
+	}
+	return (1);
 }
 
 /*	** Main Structure **
@@ -80,9 +90,9 @@ int	main(int argc, char **argv)
 {
 	unsigned int		server_pid;
 	unsigned int		i;
-	struct	sigaction	s_client;
+	struct sigaction	s_client;
 
-	if (argc == 3)
+	if (args_check(argc))
 	{
 		s_client.sa_handler = &confirm_server;
 		server_pid = ft_atoi(argv[1]);
@@ -90,18 +100,13 @@ int	main(int argc, char **argv)
 		while (1)
 		{
 			sigaction(SIGUSR2, &s_client, NULL);
-			while (i < ft_strlen(argv[2]))
+			while (i <= ft_strlen(argv[2]))
 			{
 				send_char_bits(argv[2][i], server_pid);
 				i++;
 			}
 			pause();
 		}
-	}
-	else
-	{
-		ft_printf("Error!!! Incorrect Usage\n");
-		ft_printf("Use: ./client <pid> message\n");
 	}
 	return (0);
 }

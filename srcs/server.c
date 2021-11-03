@@ -6,7 +6,7 @@
 /*   By: lmells <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 08:45:14 by lmells            #+#    #+#             */
-/*   Updated: 2021/11/03 11:23:42 by lmells           ###   ########.fr       */
+/*   Updated: 2021/11/03 13:06:06 by lmells           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
  *  	-	Convert bit array to decimal
  *  	-	Display char decimal to screen
 */
-static char	*build_bits(char *byte, int c)
+static char	*ft_build_bits(char *byte, int c)
 {
 	char			*bit_arr;
 	unsigned int	i;
@@ -43,7 +43,7 @@ static char	*build_bits(char *byte, int c)
 	return (bit_arr);
 }
 
-static void convert_bits(char *bit_arr, size_t size)
+static void	ft_convert_bits(char *bit_arr, size_t size)
 {
 	unsigned int	byte;
 	unsigned int	i;
@@ -65,10 +65,10 @@ static void convert_bits(char *bit_arr, size_t size)
 		power /= 2;
 		i++;
 	}
-	ft_printf("%c", byte);
+	ft_putchar_fd(byte, 1);
 }
 
-static void	receive_bits(int sig)
+static void	ft_receive_bits(int sig)
 {
 	static int		count;
 	static char		*byte;
@@ -77,12 +77,12 @@ static void	receive_bits(int sig)
 		count = 0;
 	count += 1;
 	if (sig == SIGUSR1)
-		byte = build_bits(byte, '1');
+		byte = ft_build_bits(byte, '1');
 	else if (sig == SIGUSR2)
-		byte = build_bits(byte, '0');
+		byte = ft_build_bits(byte, '0');
 	if (count == 8)
 	{
-		convert_bits(byte, ft_strlen(byte));
+		ft_convert_bits(byte, ft_strlen(byte));
 		free(byte);
 		byte = NULL;
 	}
@@ -95,8 +95,8 @@ int	main(void)
 	ft_printf("Use: ./client <pid> \"message\"\n");
 	while (1)
 	{
-		signal(SIGUSR1, receive_bits);
-		signal(SIGUSR2, receive_bits);
+		signal(SIGUSR1, ft_receive_bits);
+		signal(SIGUSR2, ft_receive_bits);
 		pause();
 	}
 	return (0);
