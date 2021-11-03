@@ -11,6 +11,8 @@ If we choose to use a global variable, we must justify our choice when defending
 - The server should be able to recieve several strings in a row from the client, without being restarted.
 - Communication between programs must be performed using only two signals ```SIGUSR1``` and ```SIGUSR2```.
 
+<img width="1207" alt="Screen Shot 2021-11-03 at 3 54 13 PM" src="https://user-images.githubusercontent.com/86273901/140013615-87117748-16a0-44c1-a8bc-e7418c7c9b50.png">
+
 # How to Use...
 
 Mandatory - Supports ASCII Characters.
