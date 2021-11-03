@@ -9,7 +9,7 @@ If we choose to use a global variable, we must justify our choice when defending
 - The client must be able to communicate the string sent as a parameter to the server. Once recieved, the server must display it.
 - Speed is crucial. If we think it's taking too long, then it probably is too slow.
 - The server should be able to recieve several strings in a row from the client, without being restarted.
-- Only able to use two signals ```SIGUSR1``` and ```SIGUSR2```.
+- Communication between programs must be performed using only two signals ```SIGUSR1``` and ```SIGUSR2```.
 
 # How to Use...
 
