@@ -6,49 +6,15 @@
 /*   By: lmells <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/02 08:45:59 by lmells            #+#    #+#             */
-/*   Updated: 2021/11/02 13:29:41 by lmells           ###   ########.fr       */
+/*   Updated: 2021/11/03 11:21:02 by lmells           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk_bonus.h"
 
-t_Character	g_Character;
-/*		TEST SENDING CHAR 'A'
-static void	send_test(int server_pid)
-{
-	//	Sends 'A' ASCII-Character...
-	if (server_pid)
-	{
-//			1 * (2 ^ 0) = 1;
- 		kill(server_pid, SIGUSR1);
- 		usleep(150);
-//			0 * (2 ^ 1) = 0;
- 		kill(server_pid, SIGUSR2);
- 		usleep(150);
-//			0 * (2 ^ 2) = 0;
- 		kill(server_pid, SIGUSR2);
- 		usleep(150);
-//			0 * (2 ^ 3) = 0;
- 		kill(server_pid, SIGUSR2);
- 		usleep(150);
-//			0 * (2 ^ 4) = 0;
- 		kill(server_pid, SIGUSR2);
- 		usleep(150);
-//			0 * (2 ^ 5) = 0;
- 		kill(server_pid, SIGUSR2);
- 		usleep(150);
-//			1 * (2 ^ 6) = 64;
- 		kill(server_pid, SIGUSR1);
- 		usleep(150);
-//			0 * (2 ^ 7) = 0;
- 		kill(server_pid, SIGUSR2);
- 		usleep(150);
-	}
-
-// 		Where ('1')'s are placed, 
-// 		add the calculated values to get ASCII-Character value.
-}
+/*			** GLOBAL STRUCT **
 */
+t_Character	g_Character;
 
 /*	[TODO]:
  *		-	Write a function that will handle signal from server.
@@ -64,6 +30,16 @@ static void	confirm_server(int sig)
 	}
 }
 
+/*	** SEND BINARY DATA **
+ *
+ *		-	Take in a byte from the string and the server's process ID.
+ *		-	Use bitshifting and bitwise operator to get each bit from right to
+ *			left. (Least Significent Bit goes first).
+ *		-	Bit is assigned 1 or 0 depending on position of bit in byte
+ *		-	Use kill() to send a signal to the process ID. Returns 0 on
+ *			succesful send. -1 if it errors.
+ *		-	Shift is incremented to apply (2 ^ shift).
+*/ 
 static void	send_char_bits(char byte, int pid)
 {
 	unsigned int	shift;
@@ -85,9 +61,21 @@ static void	send_char_bits(char byte, int pid)
 		usleep(200);
 		shift++;
 	}
-	ft_printf("\n");
 }
 
+/*	** Main Structure **
+ *
+ *		-	Sigaction Struct
+ *			-	Sigaction handler is used to set the function we want to handle
+ *				the signal received from a process.
+ *		-	Get the server's process ID from arguments.
+ *		-	While the process is still active. Any signal received from SIGUSR2 will be
+ *			processed by the s_client sigaction struct.
+ *		-	Iterate through each byte of the string and send the binary data to
+ *			the server.
+ *		-	Pauses the instructions, waiting for signal confirmation from the
+ *			server.
+*/
 int	main(int argc, char **argv)
 {
 	unsigned int		server_pid;
@@ -98,15 +86,11 @@ int	main(int argc, char **argv)
 	{
 		s_client.sa_handler = &confirm_server;
 		server_pid = ft_atoi(argv[1]);
-		ft_printf("----------\nDEBUG INFO\n----------\n");
-		ft_printf("Client\t= %d\n", getpid());
-		ft_printf("String\t= \"%s\"\nlen\t= %d\n", argv[2], ft_strlen(argv[2]));
-//		send_test(server_pid);
 		i = 0;
 		while (1)
 		{
 			sigaction(SIGUSR2, &s_client, NULL);
-			while (1 < ft_strlen(argv[2]))
+			while (i < ft_strlen(argv[2]))
 			{
 				send_char_bits(argv[2][i], server_pid);
 				i++;
